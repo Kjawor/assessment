@@ -1,0 +1,21 @@
+import random
+import sys
+sys.tracebacklimit = 0
+if len(sys.argv) <2:
+    raise ValueError("Missing command-line argument.")
+if FileNotFoundError:
+    raise ValueError("""Cannot open {}. Sorry about that.""".format(sys.argv[1]))
+f = open(sys.argv[1], 'r')
+w = open("emails.txt","w")
+
+for i in f:
+    digits = random.randint(1000, 9999)
+    id = i[0:8]
+    name_sur = i[9:]
+    temp = name_sur.split(",")
+    surname = temp[0].translate({ord(c): None for c in " -`'"})
+    upper = [x.lower() for x in temp[1] if x.isupper()]
+    initials = ".".join(upper)
+    w.write("""{} {}.{}{}@poppleton.ac.uk\n""".format(id,initials,surname.lower(),digits),)
+f.close()
+w.close()
