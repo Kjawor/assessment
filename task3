@@ -3,8 +3,6 @@ import sys
 sys.tracebacklimit = 0
 if len(sys.argv) <2:
     raise ValueError("Missing command-line argument.")
-if FileNotFoundError:
-    raise ValueError("""Cannot open {}. Sorry about that.""".format(sys.argv[1]))
 f = open(sys.argv[1], 'r')
 w = open("emails.txt","w")
 
