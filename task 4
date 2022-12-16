@@ -1,0 +1,41 @@
+import sys
+sys.tracebacklimit = 0
+try:
+    f = open(sys.argv[1], 'r')
+except EnvironmentError:
+    print("Error: cannot open {}. sorry about that.".format(sys.argv[1]))
+alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+def selection(decrypted_text, common):
+    score = 0
+    for i in decrypted_text.split(): #split every word into a seperate element in a list
+        if i.lower() in common:
+            score += 1
+    return score
+
+def brute_force_caesar(ciphertext):
+    common = ['the', 'and', 'to', 'a', 'in', 'of', 'is', 'it', 'that', 'on', 'for', 'this', 'with', 'as', 'was', 'be', 'by', 'at', 'are', 'but', 'not', 'an', 'have', 'has', 'will', 'or', 'if']
+    best = 0
+    best_decryption = ""
+
+    for shift in range(26):
+        decrypted_text = ""
+        for c in ciphertext:
+            if c in alphabet:
+                index = (ord(c) - ord('a')) + shift  # get a new value to be used instead of the one already in place
+                wrap = index % 26 + ord('a')  # this will make the value wrap around the standard alphabet instead of going for a value outside in the ascii table
+                decrypted_text += chr(wrap)  # convert the ascii value into a letter
+            else:
+                decrypted_text += c
+
+        score = selection(decrypted_text, common) #call to the other function to find the best match
+
+        if score > best:
+            best = score
+            best_decryption = decrypted_text
+
+    return best_decryption
+
+ciphertext = f.read()
+ciphertext = ciphertext.lower()
+print(brute_force_caesar(ciphertext))
+f.close()
